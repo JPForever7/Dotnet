@@ -48,7 +48,9 @@ namespace CalculateArray
             }
             Program a = new Program();
             a.getAve(array, length);
+            Console.Write("\n");
             a.getMax(array, length);
+            Console.Write("\n");
             a.getMin(array, length);
             Console.ReadKey();
 
