@@ -19,6 +19,7 @@ public class Square : Shape
     public Square(int edge1)
     {
         edge = edge1;
+        islegal();
     }
 }
 public class Rectangle :Shape
@@ -37,6 +38,7 @@ public class Rectangle :Shape
     {
         edgeA = edge1;
         edgeB = edge2;
+        islegal();
     }
 }
 public class Triangle : Shape
@@ -66,6 +68,7 @@ public class Triangle : Shape
         edgeA = edge1;
         edgeB = edge2;
         edgeC = edge3;
+        islegal();
     }
 
 }
@@ -73,26 +76,26 @@ public class ShapeFactory
 {
 
     //使用 getShape 方法获取形状类型的对象
-    public Shape getShape(String shapeType,int edge1,int edge2,int edge3)
+    public Shape getShape(String shapeType,params int[] list)
     {
-        if (shapeType == null)
-        {
-            return null;
-        }
-
-        if (shapeType.Equals("Square"))
+       
+        
+        if ("Square".Equals(shapeType))
         { 
-            return new Square(edge1);
+            return new Square(list[0]);
         }
-        else if (shapeType.Equals("Rectangle"))
+        else if ("Rectangle".Equals(shapeType))
         {
-            return new Rectangle(edge1 , edge2);
+            return new Rectangle(list[0] , list[1]);
         }
-        else if (shapeType.Equals("Triangle"))
+        else if ("Triangle".Equals(shapeType))
         {
-            return new Triangle(edge1,edge2,edge3);
+            return new Triangle(list[0],list[1],list[2]);
         }
-        return null;
+        else
+        {
+            throw new Exception("Object creation exception");
+        }
     }
 }
 
@@ -102,30 +105,32 @@ namespace Homework3
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
             ShapeFactory sf = new ShapeFactory();
-            Shape s1 = sf.getShape("Square",1,1,1);
-            //正常输入 不会出现错误
-            s1.islegal();
-            //预计输出面积 1
-            Console.WriteLine(s1.calculateArea());
-            //测试边长为负数 预计会出现 异常
-            //Shape s2 = sf.getShape("Square", -1, 1, 1);
-            
-            //测试矩形的面积
-            Shape rec = sf.getShape("Rectangle", 1, 2, 3);
-            Console.WriteLine(rec.calculateArea());
+            Shape s1 = sf.getShape("Square", 1);
+            Shape s2 = sf.getShape("Square", 1);
+            Shape s3 = sf.getShape("Square", 1);
+            Shape s4 = sf.getShape("Rectangle", 1,2);
+            Shape s5 = sf.getShape("Rectangle", 1, 2);
+            Shape s6 = sf.getShape("Rectangle", 1, 2);
+            Shape s7 = sf.getShape("Rectangle", 1, 2);
+            Shape s8 = sf.getShape("Rectangle", 1, 2);
+            Shape s9 = sf.getShape("Triangle", 3, 4, 5);
+            Shape s10 = sf.getShape("Triangle", 3, 4, 5);
+            Shape[] slist = { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 };
+            int sum=0;
+            int ave;
+            foreach (Shape s in slist) 
+            {
+                sum += s.calculateArea();
+            }
+            ave = sum / 10;
+            Console.WriteLine("平均面积是"+ave);
 
 
-            // 测试三角形面积
-
-            Shape tri = sf.getShape("Triangle", 3, 4, 5);
-            Console.WriteLine(tri.calculateArea());
+           
 
 
-            //测试三边 无法组成 三角形是否会报错
-            Shape triILegal = sf.getShape("Shape", 3, 2, 1);
-           triILegal.islegal();
+
 
 
         }
